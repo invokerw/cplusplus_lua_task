@@ -39,6 +39,14 @@ bool Task::Init(const char *script_path, const char *param)
 	return true;
 }
 
+void Task::Log(const char *str)
+{
+
+	std::string s = "WEIFEI->" + GetName();
+	s += str;
+	LOG(s.c_str());
+}
+
 bool Task::Tick()
 {
 	if (_close) return false;

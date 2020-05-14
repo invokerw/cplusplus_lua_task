@@ -13,8 +13,7 @@ static int script_Log(lua_State *l)
 
 	Task *t = (Task*)lua_touserdata(l, 1);
 	const char *log = lua_tostring(l, 2);
-	std::cout << t->GetName() << ":"<< log << std::endl;
-
+	t->Log(log);
 	return 0;
 }
 
@@ -73,21 +72,6 @@ static int script_ChildKeyUp(lua_State *l)
 	int key = lua_tointeger(l, 2);
 	t->ChildKeyUp(key);
 	return 0;
-}
-
-wchar_t* U8ToUnicode(const char* szU8)
-{
-	//UTF8 to Unicode
-	//预转换，得到所需空间的大小
-	int wcsLen = ::MultiByteToWideChar(CP_UTF8, NULL, szU8, strlen(szU8), NULL, 0);
-	//分配空间要给'\0'留个空间，MultiByteToWideChar不会给'\0'空间
-	wchar_t* wszString = new wchar_t[wcsLen + 1];
-	//转换
-	::MultiByteToWideChar(CP_UTF8, NULL, szU8, strlen(szU8), wszString, wcsLen);
-	//最后加上'\0'
-	wszString[wcsLen] = '\0';
-	return wszString;
-
 }
 
 

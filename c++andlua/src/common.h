@@ -3,9 +3,11 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <iostream>
 #ifdef WIN32
 #include <windows.h>
 #include <time.h>
+#include <tchar.h>
 #else
 #include <sys/time.h>
 #endif // WIN32
@@ -45,6 +47,34 @@ struct ScriptMessage
 public:
 	ScriptMessage(const char *msg, const char *arg, int64_t src): _msg(msg), _arg(arg), _src(src) {}
 };
+
+inline wchar_t* U8ToUnicode(const char* szU8)
+{
+	//UTF8 to Unicode
+	//预转换，得到所需空间的大小
+	int wcsLen = ::MultiByteToWideChar(CP_UTF8, NULL, szU8, strlen(szU8), NULL, 0);
+	//分配空间要给'\0'留个空间，MultiByteToWideChar不会给'\0'空间
+	wchar_t* wszString = new wchar_t[wcsLen + 1];
+	//转换
+	::MultiByteToWideChar(CP_UTF8, NULL, szU8, strlen(szU8), wszString, wcsLen);
+	//最后加上'\0'
+	wszString[wcsLen] = '\0';
+	return wszString;
+
+}
+
+#ifdef WIN32
+inline void LOG(const char *c)
+{
+	OutputDebugString(U8ToUnicode(c));
+	std::cout << c << std::endl;
+}
+#else
+inline void LOG(const char *c)
+{
+	std::cout << c << std::endl;
+}
+#endif // WIN32
 
 }
 

@@ -36,6 +36,7 @@ public:
 	
 	// for lua
 	void Close() { _close = true; }
+	void Log(const char * str);
 
 	void SetHWND(HWND hwnd) { _hwnd = hwnd; }
 	HWND GetHWND() { return _hwnd; }
